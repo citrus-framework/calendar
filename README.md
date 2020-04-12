@@ -1,2 +1,7 @@
-# calendar
-php calendar library for japan
+# Citrus Calendar
+php calendar library
+
+## Install
+```
+composer require citrus-framework/calendar
+```
