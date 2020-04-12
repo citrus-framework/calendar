@@ -1,0 +1,25 @@
+{
+    "name": "citrus-framework/calendar",
+    "description": "php calendar library for japan",
+    "keywords": ["citrus", "php", "library", "http"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "take64",
+            "email": "take64@citrus.tk"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "php": "^7.3",
+        "phpunit/phpunit": "^8.4",
+        "nunomaduro/phpinsights": "^v1.13"
+    },
+    "autoload": {
+        "psr-4": {
+            "Citrus\\": "src/",
+            "Test\\": "tests/"
+        }
+    }
+}
