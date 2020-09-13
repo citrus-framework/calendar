@@ -40,6 +40,14 @@ class JapaneseTest extends TestCase
     public function during_想定通り()
     {
         // 2020年の9月は祝日が2日
-        $this->assertSame(['2020-09-21', '2020-09-22'], Japanese::during('2020-09-01', '2020-09-30'));
+
+
+        // 検算
+        $this->assertEquals([
+                '2020-09-21' => Dates::new('2020-09-21'),
+                '2020-09-22' => Dates::new('2020-09-22'),
+            ],
+            Japanese::during('2020-09-01', '2020-09-30')
+        );
     }
 }
