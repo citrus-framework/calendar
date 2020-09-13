@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Citrus\Calendar\Holiday;
 
+use Citrus\Variable\Dates;
+
 /**
  * 日本の暦
  */
@@ -201,7 +203,6 @@ class Japanese
 
     /**
      * 祝日かどうか
-     * (2018 - 2020)
      *
      * @param string $date 日付文字列
      * @return bool true:祝日,false:祝日ではない
@@ -209,16 +210,49 @@ class Japanese
     public static function isHoliday(string $date): bool
     {
         $timestamp = strtotime($date);
-        $year = date('Y', $timestamp);
-        $month = date('n', $timestamp);
-        $day = date('j', $timestamp);
+        $year = (int)date('Y', $timestamp);
+        $month = (int)date('n', $timestamp);
+        $day = (int)date('j', $timestamp);
 
-        if (true === isset(self::HOLIDAYS[$year])
-            && true === isset(self::HOLIDAYS[$year][$month])
-            && true === isset(self::HOLIDAYS[$year][$month][$day]))
+        if (true === array_key_exists($year, self::HOLIDAYS)
+            and true === array_key_exists($month, self::HOLIDAYS[$year])
+            and true === array_key_exists($day, self::HOLIDAYS[$year][$month]))
         {
             return true;
         }
         return false;
+    }
+
+
+
+    /**
+     * 範囲内の祝日を返却する
+     *
+     * @param string $from 範囲開始(日付文字列Y-m-d)
+     * @param string $to 範囲終了(日付文字列Y-m-d)
+     * @return string[] 範囲内の祝日配列(日付文字列Y-m-d)
+     */
+    public static function during(string $from, string $to): array
+    {
+        $from_dt = Dates::new($from);
+        $to_dt = Dates::new($to);
+
+        $results = [];
+
+        // 範囲ループ
+        for ($current_dt = clone $from_dt; $current_dt <= $to_dt; $current_dt->addDay(1))
+        {
+            $year = (int)$current_dt->format('Y');
+            $month = (int)$current_dt->format('n');
+            $day = (int)$current_dt->format('j');
+            // 存在したらスタック
+            if (true === array_key_exists($year, self::HOLIDAYS)
+                and true === array_key_exists($month, self::HOLIDAYS[$year])
+                and true === array_key_exists($day, self::HOLIDAYS[$year][$month]))
+            {
+                $results[] = $current_dt->format('Y-m-d');
+            }
+        }
+        return $results;
     }
 }

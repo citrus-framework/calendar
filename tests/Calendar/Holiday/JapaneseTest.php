@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Test\Calendar\Holiday;
 
 use Citrus\Calendar\Holiday\Japanese;
+use Citrus\Variable\Dates;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -29,5 +30,16 @@ class JapaneseTest extends TestCase
         $this->assertFalse(Japanese::isHoliday('2020-04-13'));
         // おそらく昭和の日だが未定義(2022-04-29)
         $this->assertFalse(Japanese::isHoliday('2022-04-29'));
+    }
+
+
+
+    /**
+     * @test
+     */
+    public function during_想定通り()
+    {
+        // 2020年の9月は祝日が2日
+        $this->assertSame(['2020-09-21', '2020-09-22'], Japanese::during('2020-09-01', '2020-09-30'));
     }
 }
