@@ -230,7 +230,7 @@ class Japanese
      *
      * @param string $from 範囲開始(日付文字列Y-m-d)
      * @param string $to 範囲終了(日付文字列Y-m-d)
-     * @return string[] 範囲内の祝日配列(日付文字列Y-m-d)
+     * @return array 範囲内の祝日配列 [(日付文字列Y-m-d) => Datesオブジェクト ...]
      */
     public static function during(string $from, string $to): array
     {
@@ -250,7 +250,7 @@ class Japanese
                 and true === array_key_exists($month, self::HOLIDAYS[$year])
                 and true === array_key_exists($day, self::HOLIDAYS[$year][$month]))
             {
-                $results[] = $current_dt->format('Y-m-d');
+                $results[$current_dt->format('Y-m-d')] = clone $current_dt;
             }
         }
         return $results;
